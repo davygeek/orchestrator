@@ -1464,10 +1464,13 @@ func executeCheckAndRecoverFunction(analysisEntry inst.ReplicationAnalysis, cand
 	// We're about to embark on recovery shortly...
 
 	// Check for recovery being disabled globally
-	if recoveryDisabledGlobally, err := IsRecoveryDisabled(); err != nil {
+	recoveryDisabledGlobally, err := IsRecoveryDisabled()
+	if err != nil {
 		// Unexpected. Shouldn't get this
 		log.Errorf("Unable to determine if recovery is disabled globally: %v", err)
-	} else if recoveryDisabledGlobally {
+	}
+
+	if recoveryDisabledGlobally {
 		log.Infof("CheckAndRecover: Analysis: %+v, InstanceKey: %+v, candidateInstanceKey: %+v, "+
 			"skipProcesses: %v: NOT Recovering host (disabled globally)",
 			analysisEntry.Analysis, analysisEntry.AnalyzedInstanceKey, candidateInstanceKey, skipProcesses)
